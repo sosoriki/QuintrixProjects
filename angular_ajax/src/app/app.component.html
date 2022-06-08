@@ -1,0 +1,30 @@
+<h1>
+  Welcome to {{title}}
+</h1>
+<input type="submit" value="my button" (mouseenter)="myMouseEnter()">
+<div ng-mouseleave="count = count + 1" ng-init="count=0">Mouse over me! (and mouse away from me)</div>
+<input type="text" (keydown)="myKeyDown($event)"><p>Key down</p>
+<br/>
+<input type="text" (keyup)="myKeyUp($event)"><p>Key up</p>
+<br/>
+<input type="text" (focus)="myFocusEvent('gainedFocus')" (blur)="myFocusEvent('lostFocus')"><p>Focus</p>
+<br/>
+<div>
+  Cut from here:
+  <input [(ngModel)]="cutContent" type="text" (copy)="cutEvent(cutContent)"><br/>
+  Paste in here:
+  <input type="text" [(ngModel)]="cutContent" (paste)="pasteContent(cutContent)"><br/>
+</div>
+<br/>
+<div (mousedown)="myMouseHandler($event, 'mouse down ')" (mouseup)="myMouseHandler($event, 'mouse up ')">
+  This area has <br/>
+  mouse-down <br/>
+  and<br/>
+  mouse-up<br/>
+  enabled.
+</div>
+<br/>
+
+<p [myHighlight]="''">Highlight me!</p>
+<p [myHighlight]="'violet'">Hightlight me too!</p>
+<p [myHighlight]="'green'">Hightlight me also!</p>

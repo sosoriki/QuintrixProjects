@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <script src="./madlibs.js"></script>
+    <head>
+        <link rel="stylesheet" href="madlibs.css">
+    </head>
+    <body>
+        <div class="input-card">
+            <h1>Mad Libs</h1>
+            <form onsubmit="generateMadLibs(event)">
+                Person Name: <input type="text" id="personName" name="personName" required><br/>
+                Character: <input type="text" id="character" name="character" required><br/>
+                Adverb: <input type="text" id="adverb" name="adverb" required><br/>
+                Adjective: <input type="text" id="adj" name="adj" required><br/>
+                <div class="buttonHolder">
+                    <button type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+        <div id="madlibs" class="hide">
+            <div id="story" class="madlibs-story">
+            
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,76 @@
+html{
+    height: 100%;
+}
+
+body{
+    background-color: #eec0c6;
+    background-image: linear-gradient(315deg, #eec0c6 0%, #7ee8fa 74%);
+}
+
+h1{
+    padding: 30px;
+    color: #7ee8fa;
+}
+
+.input-card{
+    background-color: plum;
+    border-radius: 20px;
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;;
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+    min-width: 20vw;
+    min-height: 20vw;
+    max-width: 40vw;
+    max-height: 50vw;
+    margin: 0 auto;
+}
+
+form{
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.buttonHolder{
+    text-align: center;
+}
+
+input{
+    margin-bottom: 0.5rem;
+}
+
+.hide{
+    display: none;
+}
+
+.madlibs-story{
+    background-color: turquoise;
+    border-radius: 20px;
+    box-shadow: rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset;;
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+    min-width: 20vw;
+    min-height: 20vw;
+    max-width: 40vw;
+    max-height: 50vw;
+    margin: 0 auto;
+}
+
+h2{
+    padding: 30px;
+    color: palevioletred;
+}
+
+p{
+    padding: 30px;
+    margin-left: 60px;
+    margin-right: 60px;
+}
+
+span{
+    color:red;
+}

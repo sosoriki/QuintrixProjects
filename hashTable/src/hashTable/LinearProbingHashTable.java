@@ -11,6 +11,7 @@ public class LinearProbingHashTable<K, V> implements GradableMap<K, V> {
 	private HashTableEntry[] entries;
 	private double loadFactor;
 	private int size;
+	private int numOfEntries;
 	
 	public LinearProbingHashTable(){
 		this.size = 11;
@@ -39,37 +40,55 @@ public class LinearProbingHashTable<K, V> implements GradableMap<K, V> {
 
 	@Override
 	public boolean containsKey(Object arg0) {
-		int iterator = 0;
-		while(iterator < entries.length){
-			if (entries[iterator].getKey() == ((HashTableEntry) arg0)) {
-				return true;
+		int index = arg0.hashCode() % size;
+		if (entries[index] != null && entries[index].getKey().equals(arg0) && !entries[index].isAvailable()) {
+			return true;
+		}
+		for(int i = 0; i < this.size; i++){
+			if(entries[i] != null) {
+				if (entries[i].getKey().equals(arg0) && !entries[i].isAvailable()) {
+					return true;
+				}
 			}
-			iterator++;
 		}
 		return false;
 	}
 
 	@Override
 	public boolean containsValue(Object arg0) {
-		int iterator = 0;
-		while(iterator < entries.length){
-			if (entries[iterator].getValue() == ((HashTableEntry) arg0)) {
-				return true;
+		int index = arg0.hashCode() % size;
+		if (entries[index] != null && entries[index].getValue().equals(arg0) && !entries[index].isAvailable()) {
+			return true;
+		}
+		for(int i = 0; i < this.size; i++){
+			if(entries[i] != null) {
+				if (entries[i].getValue().equals(arg0) && !entries[i].isAvailable()) {
+					return true;
+				}
 			}
-			iterator++;
 		}
 		return false;
 	}
 
 	@Override
 	public Set<Map.Entry<K, V>> entrySet() {
-		// TODO Auto-generated method stub
-		return null;
+		Set<Map.Entry<K, V>> set = new HashSet<>();
+		for(int i = 0; i < this.size; i++) {
+			if(entries[i] == null) {
+				set.add(entries[i]);
+			}
+		}
+		return set;
 	}
 
 	@Override
 	public V get(Object arg0) {
-		// TODO Auto-generated method stub
+		if(arg0 == null) throw new NullPointerException("Key cannot be null!\n");
+		for(int i = 0; i < this.size; i++) {
+			if(entries[i] != null && entries[i].getKey().equals(arg0)) {
+				return (V) entries[i].getValue();
+			}
+		}
 		return null;
 	}
 
@@ -85,36 +104,48 @@ public class LinearProbingHashTable<K, V> implements GradableMap<K, V> {
 	public Set<K> keySet() {
 		Set<K> set = new HashSet<K>();
 		for(int i = 0; i < entries.length; i++) {
-			set.add((K) entries[i].getKey());
+			if(entries[i] != null) {
+				set.add((K) entries[i].getKey());
+			}
 		}
 		return set;
 	}
-
+	
 	@Override
 	public V put(K key, V value) {
-		if(key == null) throw new IllegalArgumentException("NullPointerException");
-		if(value == null) {
-			System.out.printf("Value was null!\n");
-			return null;
-		}
+		int index = (int)key % size;
+		int i = index;
 		HashTableEntry entry = new HashTableEntry(key, value);
-		if((int)key > this.size) {
-			int index = (int)key % size;
-			for(int i = 0; i < entries.length; i++) {
-				if(i == index) {
-					if(entries[i] != null) {
-						index++;
-					}
-					else if((String)entries[i].getValue() == "-") {
-						entries[i] = entry;
-					}
-					else {
-						entries[i] = entry;
+		do {
+			if(entries[i] == null) {
+				entries[i] = entry;
+				entries[i].setAvailable(false);
+				numOfEntries++;
+				return null;
+			}
+			if(entries[i].getKey().equals(key)) {
+				for(int j = i; j < size; j++) {
+					if(entries[j] == null) {
+						entries[j] = entry;
+						entries[j].setAvailable(false);
+						numOfEntries++;
+						return null;
 					}
 				}
 			}
-		}
+			i = (i + 1) % size;
+		}while(i != index);
 		return null;
+	}
+	
+	private void regrow() {
+		int newSize = size * 2;
+		HashTableEntry[] newArray = new HashTableEntry[newSize];
+		for(int i = 0; i < this.size; i++) {
+			newArray[i] = entries[i];
+		}
+		this.size = newSize;
+		entries = newArray;
 	}
 
 	@Override
@@ -128,10 +159,13 @@ public class LinearProbingHashTable<K, V> implements GradableMap<K, V> {
 		if((int)key > size) {
 			int index = (int)key % size;
 			entries[index].setValue("-");
+			entries[(int)key].setAvailable(true);
 		}
 		else {
-			entries[(int)key].setValue("-");
+			entries[(int)key].setValue(null);
+			entries[(int)key].setAvailable(true);
 		}
+		numOfEntries--;
 		return null;
 	}
 
@@ -139,20 +173,25 @@ public class LinearProbingHashTable<K, V> implements GradableMap<K, V> {
 	public int size() {
 		return this.size;
 	}
+	
+	public int numOfEntries() {
+		return this.numOfEntries;
+	}
 
 	@Override
 	public Collection<V> values() {
 		Collection<V> collection = new ArrayList<V>();
 		for(int i = 0; i < entries.length; i++) {
-			collection.add((V) entries[i].getValue());
+			if(entries[i] != null) {
+				collection.add((V) entries[i].getValue());
+			}
 		}
 		return collection;
 	}
 
 	@Override
 	public HashTableEntry<K, V>[] getArray() {
-		// TODO Auto-generated method stub
-		return null;
+		return entries;
 	}
 
 	@Override

@@ -40,8 +40,7 @@ public class HashTableEntry<K, V> implements Entry<K, V> {
 	
 	@Override
 	public int hashCode(){
-		int hashCode = 5;
-		return key.hashCode() * hashCode;
+		return this.getKey().hashCode() ^ this.getValue().hashCode();
 	}
 	
 	@Override
